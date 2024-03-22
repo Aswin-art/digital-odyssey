@@ -13,7 +13,7 @@ const myFont = localFont({
 export default function Home() {
   return (
     <>
-      <MusicBackground />
+      {/* <MusicBackground /> */}
       <main
         className="flex flex-col items-center min-h-screen justify-end gap-5 p-24"
         style={{
