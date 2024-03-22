@@ -36,8 +36,12 @@ export default function Home() {
             backgroundPosition: "center",
             transition: "filter 0.3s",
           }}
-          onMouseEnter={(e) => (e.target.style.filter = "brightness(0.8)")}
-          onMouseLeave={(e) => (e.target.style.filter = "brightness(1)")}
+          onMouseEnter={(e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) =>
+            ((e.target as HTMLHeadingElement).style.filter = "brightness(0.8)")
+          }
+          onMouseLeave={(e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) =>
+            ((e.target as HTMLHeadingElement).style.filter = "brightness(1)")
+          }
         >
           play games
         </h1>
