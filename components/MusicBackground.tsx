@@ -1,19 +1,11 @@
-import React, { Component } from "react";
-// import ReactHowler from "react-howler";
+import React from "react";
+import { useHowl, Play } from "rehowl";
 
-class MusicBackground extends Component {
-  render() {
-    return (
-      <div className="text2xl">test</div>
-      // <ReactHowler
-      //   src="/musics/music-background.wav"
-      //   playing={true}
-      //   loop={true}
-      //   html5={true}
-      //   preload={true}
-      // />
-    );
-  }
-}
+const MusicBackground = () => {
+  const { howl } = useHowl({
+    src: ["/musics/landing-music-background.wav"],
+  });
+  return <Play howl={howl} loop={true} />;
+};
 
 export default MusicBackground;
