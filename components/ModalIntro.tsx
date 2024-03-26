@@ -5,7 +5,9 @@ import useGameState from "@/hooks/store";
 import { motion } from "framer-motion";
 
 const ModalIntro = () => {
-  const updateModalIntroState = useGameState((state) => state.changeModalIntro);
+  const updateModalIntroState = useGameState(
+    (state) => state.changeModalHeadphone
+  );
   return (
     <main className="flex flex-col items-center min-h-screen justify-center gap-5 p-24 bg-black">
       <motion.div

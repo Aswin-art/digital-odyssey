@@ -6,20 +6,26 @@ type PositionType = {
 };
 
 interface GameState {
-  modalIntro: boolean;
+  modalHeadphone: boolean;
+  isPlay: boolean;
+  isIntroEnded: boolean;
   position: PositionType;
   progress: string;
-  changeModalIntro: () => void;
+  changeModalHeadphone: () => void;
+  changeIsPlayState: () => void;
 }
 
 const useGameState = create<GameState>()((set) => ({
-  modalIntro: false,
+  modalHeadphone: false,
+  isPlay: false,
+  isIntroEnded: false,
   position: {
     x: null,
     y: null,
   },
   progress: "",
-  changeModalIntro: () => set(() => ({ modalIntro: true })),
+  changeModalHeadphone: () => set(() => ({ modalHeadphone: true })),
+  changeIsPlayState: () => set(() => ({ isPlay: true })),
 }));
 
 export default useGameState;
