@@ -89,19 +89,6 @@ export default function Home() {
                 </h1>
               </main>
               <MusicBackground />
-              <AnimatedCursor
-                innerSize={10}
-                outerSize={45}
-                innerScale={1}
-                outerScale={2}
-                outerAlpha={0}
-                innerStyle={{
-                  backgroundColor: "white",
-                }}
-                outerStyle={{
-                  border: "3px solid white",
-                }}
-              />
             </>
           ) : (
             <>
@@ -117,6 +104,20 @@ export default function Home() {
               )}
             </>
           )}
+
+          <AnimatedCursor
+            innerSize={10}
+            outerSize={45}
+            innerScale={1}
+            outerScale={2}
+            outerAlpha={0}
+            innerStyle={{
+              backgroundColor: "white",
+            }}
+            outerStyle={{
+              border: "3px solid white",
+            }}
+          />
         </>
       )}
     </>
