@@ -1,5 +1,5 @@
 "use client";
-import ModalIntro from "@/components/ModalIntro";
+import Modal from "@/components/Modal";
 import MusicBackground from "@/components/MusicBackground";
 import useGameState from "@/hooks/store";
 import localFont from "next/font/local";
@@ -37,10 +37,20 @@ export default function Home() {
     newSound.play();
     gameState.changeIsPlayState();
   };
+
+  const updateModalIntroState = useGameState(
+    (state) => state.changeModalHeadphone
+  );
+
   return (
     <>
       {!gameState.modalHeadphone ? (
-        <ModalIntro />
+        <Modal
+          title="Tips Sebelum Bermain"
+          desc="Gunakan headphone untuk kenyamanan bermain"
+          btnText="Mengerti!"
+          onClickFunc={updateModalIntroState}
+        />
       ) : (
         <>
           {!gameState.isPlay ? (
@@ -94,7 +104,18 @@ export default function Home() {
               />
             </>
           ) : (
-            <VideoIntro />
+            <>
+              {gameState.isIntroEnded ? (
+                <Modal
+                  title="Coming Soon"
+                  desc="Game masih dalam tahap pengembangan"
+                  btnText="kembali"
+                  onClickFunc={() => console.log("oke")}
+                />
+              ) : (
+                <VideoIntro />
+              )}
+            </>
           )}
         </>
       )}

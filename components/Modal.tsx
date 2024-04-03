@@ -1,13 +1,19 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import useGameState from "@/hooks/store";
 import { motion } from "framer-motion";
 
-const ModalIntro = () => {
-  const updateModalIntroState = useGameState(
-    (state) => state.changeModalHeadphone
-  );
+const Modal = ({
+  title,
+  desc,
+  btnText,
+  onClickFunc,
+}: {
+  title: string;
+  desc: string;
+  btnText: string;
+  onClickFunc: () => void;
+}) => {
   return (
     <main className="flex flex-col items-center min-h-screen justify-center gap-5 p-24 bg-black">
       <motion.div
@@ -17,19 +23,17 @@ const ModalIntro = () => {
       >
         <Card className="bg-black border-slate-700">
           <CardHeader>
-            <CardTitle className="text-center text-white">
-              Tips Sebelum Bermain
-            </CardTitle>
+            <CardTitle className="text-center text-white">{title}</CardTitle>
           </CardHeader>
           <CardContent className="text-white text-center">
-            <p>Gunakan headphone untuk kenyamanan bermain</p>
+            <p>{desc}</p>
             <Button
-              onClick={updateModalIntroState}
+              onClick={onClickFunc}
               type="button"
               variant={"outline"}
               className="bg-black mt-5"
             >
-              Mengerti!
+              {btnText}
             </Button>
           </CardContent>
         </Card>
@@ -38,4 +42,4 @@ const ModalIntro = () => {
   );
 };
 
-export default ModalIntro;
+export default Modal;
