@@ -6,7 +6,8 @@ import localFont from "next/font/local";
 import AnimatedCursor from "react-animated-cursor";
 import { Howl } from "howler";
 import Navbar from "@/components/Navbar";
-import VideoIntro from "@/components/VideoIntro";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const myFont = localFont({
   src: "./dragon-hunter.otf",
@@ -15,6 +16,9 @@ const myFont = localFont({
 
 export default function Home() {
   const gameState = useGameState((state) => state);
+  const session = useSession();
+  const router = useRouter();
+
   const handleHover = () => {
     const buttonPlayElement = document.getElementById("buttonPlay");
     if (buttonPlayElement) {
@@ -30,12 +34,17 @@ export default function Home() {
   };
 
   const handleButtonClick = () => {
-    const newSound = new Howl({
-      src: ["/musics/click_button.wav"],
-      autoplay: true,
-    });
-    newSound.play();
-    gameState.changeIsPlayState();
+    if (session.data?.user) {
+      const newSound = new Howl({
+        src: ["/musics/click_button.wav"],
+        autoplay: true,
+      });
+      newSound.play();
+      router.push("/games");
+    } else {
+      signIn("google");
+      gameState.changeIsLogin();
+    }
   };
 
   const updateModalIntroState = useGameState(
@@ -54,57 +63,40 @@ export default function Home() {
           />
         ) : (
           <>
-            {!gameState.isPlay ? (
-              <>
-                {/* <Navbar /> */}
-                <main
-                  className="flex flex-col items-center min-h-screen justify-end gap-5 p-24"
-                  style={{
-                    backgroundImage: `url('/images/bg-hero.png')`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  <h1
-                    className={`text-4xl lg:none text-white font-bold ${myFont.className}`}
-                  >
-                    digital odyssey
-                  </h1>
-                  <h1 className="text-6xl text-white font-bold">
-                    The Canonical Chronicles
-                  </h1>
-                  <h1
-                    className={`text-2xl text-black font-bold px-14 py-3 ${myFont.className}`}
-                    id="buttonPlay"
-                    style={{
-                      backgroundImage: `url('/images/btn-background.webp')`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      transition: "filter 0.3s",
-                    }}
-                    onMouseEnter={handleHover}
-                    onMouseLeave={handleHoverExit}
-                    onClick={handleButtonClick}
-                  >
-                    play games
-                  </h1>
-                </main>
-                <MusicBackground />
-              </>
-            ) : (
-              <>
-                {gameState.isIntroEnded ? (
-                  <Modal
-                    title="Coming Soon"
-                    desc="Game masih dalam tahap pengembangan"
-                    btnText="kembali"
-                    onClickFunc={() => console.log("oke")}
-                  />
-                ) : (
-                  <VideoIntro />
-                )}
-              </>
-            )}
+            {/* <Navbar /> */}
+            <main
+              className="flex flex-col items-center min-h-screen justify-end gap-5 p-24"
+              style={{
+                backgroundImage: `url('/images/bg-hero.png')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <h1
+                className={`text-4xl lg:none text-white font-bold ${myFont.className}`}
+              >
+                digital odyssey
+              </h1>
+              <h1 className="text-6xl text-white font-bold">
+                The Canonical Chronicles
+              </h1>
+              <h1
+                className={`text-2xl text-black font-bold px-14 py-3 hover:cursor-pointer ${myFont.className}`}
+                id="buttonPlay"
+                style={{
+                  backgroundImage: `url('/images/btn-background.webp')`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  transition: "filter 0.3s",
+                }}
+                onMouseEnter={handleHover}
+                onMouseLeave={handleHoverExit}
+                onClick={handleButtonClick}
+              >
+                {session.data?.user ? "play game" : "login to play"}
+              </h1>
+            </main>
+            <MusicBackground />
 
             <AnimatedCursor
               innerSize={10}

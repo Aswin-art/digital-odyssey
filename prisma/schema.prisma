@@ -5,10 +5,139 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          String?
+  accounts      Account[]
+  sessions      Session[]
+  inventory     Inventory[]
+  results       Result[]
+  gameState     Game?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Item {
+  id          String     @id @default(cuid())
+  name        String
+  point       Int
+  description String
+  effect      String     // Efek item pada player (misalnya "heal", "boost")
+  inventory   Inventory[]
+
+  @@map("items")
+}
+
+model Question {
+  id            String     @id @default(cuid())
+  questionText  String
+  answers       Answer[]
+
+  @@map("questions")
+}
+
+model Answer {
+  id          String     @id @default(cuid())
+  text        String
+  isCorrect   Boolean
+  questionId  String
+  question    Question   @relation(fields: [questionId], references: [id])
+
+  @@map("answers")
+}
+
+model Result {
+  id          String     @id @default(cuid())
+  userId      String
+  score       Int
+  correct     Int        // Jumlah jawaban benar
+  incorrect   Int        // Jumlah jawaban salah
+  createdAt   DateTime   @default(now())
+
+  user        User       @relation(fields: [userId], references: [id])
+
+  @@map("results")
+}
+
+model Inventory {
+  id        String    @id @default(cuid())
+  userId    String
+  itemId    String
+  quantity  Int      @default(1)
+
+  user      User     @relation(fields: [userId], references: [id])
+  item      Item     @relation(fields: [itemId], references: [id])
+
+  @@map("inventories")
+}
+
+model Game {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  currentScore  Int
+  currentHealth Int
+
+  user          User      @relation(fields: [userId], references: [id])
+
+  @@map("games")
 }
