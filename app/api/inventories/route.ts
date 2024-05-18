@@ -1,12 +1,5 @@
-import { GetCurrentUser } from "@/models/user";
-import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 
-export async function GET(req: NextApiRequest) {
-  try {
-    const user = GetCurrentUser();
-    return Response.json({ message: "success", data: user });
-  } catch (err) {
-    console.log(err);
-    return Response.json({ message: err, data: null });
-  }
+export async function GET(req: NextRequest) {
+  return Response.json({ message: "oke" });
 }
