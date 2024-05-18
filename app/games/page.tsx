@@ -4,7 +4,7 @@ import Modal from "@/components/Modal";
 import useGameState from "@/hooks/store";
 import VideoIntro from "@/components/VideoIntro";
 
-const page = () => {
+const Page = () => {
   const gameState = useGameState((state) => state);
   return (
     <>
@@ -35,4 +35,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
