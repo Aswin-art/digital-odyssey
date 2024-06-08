@@ -1,13 +1,16 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { buttonVariants } from "./ui/button";
 import NavItems from "./NavItems";
+import { useSession } from "next-auth/react";
+import UserProfileNavbar from "./UserProfileNavbar";
 
 const Navbar = () => {
-  const user = null;
+  const session = useSession();
   return (
-    <div className="z-50 bg-[#141414] text-white top-0 inset-x-0 h-16">
+    <div className="z-50 bg-[#141414] text-white top-0 inset-x-0 h-16 absolute">
       <header className="relative">
         <div className="shadow-sm">
           <div className="flex-grow flex-1">
@@ -34,11 +37,14 @@ const Navbar = () => {
 
                 <div className="ml-auto flex items-center">
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    {user ? null : (
+                    {session?.data?.user ? (
+                      <UserProfileNavbar />
+                    ) : (
                       <Link
                         href={"/register"}
                         className={buttonVariants({
-                          className: "text-white bg-yellow-500",
+                          className:
+                            "text-white bg-transparent border border-yellow-500 hover:bg-yellow-500",
                         })}
                       >
                         Buat Akun
