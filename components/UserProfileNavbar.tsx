@@ -29,10 +29,10 @@ export default function UserProfileNavbar() {
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem>
-          <Link href={"/leaderboard"}>Leaderboard</Link>
+          <Link href={"/"}>Leaderboard</Link>
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem>
-          <Link href={"/history"}>Riwayat</Link>
+          <Link href={"/"}>Riwayat</Link>
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
