@@ -1,9 +1,7 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { buttonVariants } from "./ui/button";
-import NavItems from "./NavItems";
 import { useSession } from "next-auth/react";
 import UserProfileNavbar from "./UserProfileNavbar";
 
@@ -20,13 +18,6 @@ const Navbar = () => {
 
                 <div className="ml-4 flex lg:ml-0">
                   <Link href={"/"} className="font-bold">
-                    {/* <Image
-                      src={"/logo-white.png"}
-                      alt="logo"
-                      width={100}
-                      height={100}
-                      loading="lazy"
-                    /> */}
                     Digital Odyssey
                   </Link>
                 </div>
@@ -41,7 +32,7 @@ const Navbar = () => {
                       <UserProfileNavbar />
                     ) : (
                       <Link
-                        href={"/register"}
+                        href={"/"}
                         className={buttonVariants({
                           className:
                             "text-white bg-transparent border border-yellow-500 hover:bg-yellow-500",
