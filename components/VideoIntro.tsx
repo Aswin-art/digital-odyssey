@@ -1,3 +1,4 @@
+"use client";
 import useGameState from "@/hooks/store";
 import React, { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";

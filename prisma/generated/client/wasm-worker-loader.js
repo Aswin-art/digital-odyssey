@@ -1,1 +1,1 @@
-export default (await import('./query_engine_bg.wasm')).default
+export default import('./query_engine_bg.wasm')

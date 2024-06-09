@@ -342,8 +342,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 5.14.0
-   * Query Engine version: e9771e62de70f79a5e1c604a2d7c8e2a0a874b48
+   * Prisma Client JS version: 5.15.0
+   * Query Engine version: 12e25d8d06f6ea5a0252864dd9a03b1bb51f3022
    */
   export type PrismaVersion = {
     client: string
@@ -1971,6 +1971,17 @@ export namespace Prisma {
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
+  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    emailVerified?: boolean
+    image?: boolean
+    role?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["user"]>
+
   export type UserSelectScalar = {
     id?: boolean
     name?: boolean
@@ -1982,7 +1993,6 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -1991,7 +2001,7 @@ export namespace Prisma {
     gameState?: boolean | User$gameStateArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -2014,7 +2024,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
-
 
   type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
 
@@ -2663,11 +2672,7 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the User
      */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
+    select?: UserSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Users.
      */
@@ -3140,6 +3145,23 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
+  export type AccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
   export type AccountSelectScalar = {
     userId?: boolean
     type?: boolean
@@ -3156,11 +3178,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-
   export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
-
+  export type AccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
 
   export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Account"
@@ -3184,7 +3207,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["account"]>
     composites: {}
   }
-
 
   type AccountGetPayload<S extends boolean | null | undefined | AccountDefaultArgs> = $Result.GetResult<Prisma.$AccountPayload, S>
 
@@ -3830,16 +3852,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Account
      */
-    select?: AccountSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
+    select?: AccountSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Accounts.
      */
     data: AccountCreateManyInput | AccountCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4114,6 +4136,15 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
+  export type SessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
   export type SessionSelectScalar = {
     sessionToken?: boolean
     userId?: boolean
@@ -4122,11 +4153,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
-
+  export type SessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
 
   export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Session"
@@ -4142,7 +4174,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["session"]>
     composites: {}
   }
-
 
   type SessionGetPayload<S extends boolean | null | undefined | SessionDefaultArgs> = $Result.GetResult<Prisma.$SessionPayload, S>
 
@@ -4780,16 +4811,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Session
      */
-    select?: SessionSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
+    select?: SessionSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Sessions.
      */
     data: SessionCreateManyInput | SessionCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5047,12 +5078,17 @@ export namespace Prisma {
     expires?: boolean
   }, ExtArgs["result"]["verificationToken"]>
 
+  export type VerificationTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
   export type VerificationTokenSelectScalar = {
     identifier?: boolean
     token?: boolean
     expires?: boolean
   }
-
 
 
   export type $VerificationTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5065,7 +5101,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["verificationToken"]>
     composites: {}
   }
-
 
   type VerificationTokenGetPayload<S extends boolean | null | undefined | VerificationTokenDefaultArgs> = $Result.GetResult<Prisma.$VerificationTokenPayload, S>
 
@@ -5676,7 +5711,7 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the VerificationToken
      */
-    select?: VerificationTokenSelect<ExtArgs> | null
+    select?: VerificationTokenSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many VerificationTokens.
      */
@@ -5975,6 +6010,14 @@ export namespace Prisma {
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["item"]>
 
+  export type ItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    point?: boolean
+    description?: boolean
+    effect?: boolean
+  }, ExtArgs["result"]["item"]>
+
   export type ItemSelectScalar = {
     id?: boolean
     name?: boolean
@@ -5983,12 +6026,11 @@ export namespace Prisma {
     effect?: boolean
   }
 
-
   export type ItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     inventory?: boolean | Item$inventoryArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }
-
+  export type ItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $ItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Item"
@@ -6004,7 +6046,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["item"]>
     composites: {}
   }
-
 
   type ItemGetPayload<S extends boolean | null | undefined | ItemDefaultArgs> = $Result.GetResult<Prisma.$ItemPayload, S>
 
@@ -6642,11 +6683,7 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Item
      */
-    select?: ItemSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ItemInclude<ExtArgs> | null
+    select?: ItemSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Items.
      */
@@ -6923,17 +6960,21 @@ export namespace Prisma {
     _count?: boolean | QuestionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["question"]>
 
+  export type QuestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    questionText?: boolean
+  }, ExtArgs["result"]["question"]>
+
   export type QuestionSelectScalar = {
     id?: boolean
     questionText?: boolean
   }
 
-
   export type QuestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     answers?: boolean | Question$answersArgs<ExtArgs>
     _count?: boolean | QuestionCountOutputTypeDefaultArgs<ExtArgs>
   }
-
+  export type QuestionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $QuestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Question"
@@ -6946,7 +6987,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["question"]>
     composites: {}
   }
-
 
   type QuestionGetPayload<S extends boolean | null | undefined | QuestionDefaultArgs> = $Result.GetResult<Prisma.$QuestionPayload, S>
 
@@ -7581,11 +7621,7 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Question
      */
-    select?: QuestionSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuestionInclude<ExtArgs> | null
+    select?: QuestionSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Questions.
      */
@@ -7877,6 +7913,14 @@ export namespace Prisma {
     question?: boolean | QuestionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["answer"]>
 
+  export type AnswerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    text?: boolean
+    isCorrect?: boolean
+    questionId?: boolean
+    question?: boolean | QuestionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["answer"]>
+
   export type AnswerSelectScalar = {
     id?: boolean
     text?: boolean
@@ -7884,11 +7928,12 @@ export namespace Prisma {
     questionId?: boolean
   }
 
-
   export type AnswerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     question?: boolean | QuestionDefaultArgs<ExtArgs>
   }
-
+  export type AnswerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    question?: boolean | QuestionDefaultArgs<ExtArgs>
+  }
 
   export type $AnswerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Answer"
@@ -7903,7 +7948,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["answer"]>
     composites: {}
   }
-
 
   type AnswerGetPayload<S extends boolean | null | undefined | AnswerDefaultArgs> = $Result.GetResult<Prisma.$AnswerPayload, S>
 
@@ -8540,16 +8584,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Answer
      */
-    select?: AnswerSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AnswerInclude<ExtArgs> | null
+    select?: AnswerSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Answers.
      */
     data: AnswerCreateManyInput | AnswerCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnswerIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8874,6 +8918,16 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["result"]>
 
+  export type ResultSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    score?: boolean
+    correct?: boolean
+    incorrect?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["result"]>
+
   export type ResultSelectScalar = {
     id?: boolean
     userId?: boolean
@@ -8883,11 +8937,12 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-
   export type ResultInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
-
+  export type ResultIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
 
   export type $ResultPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Result"
@@ -8904,7 +8959,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["result"]>
     composites: {}
   }
-
 
   type ResultGetPayload<S extends boolean | null | undefined | ResultDefaultArgs> = $Result.GetResult<Prisma.$ResultPayload, S>
 
@@ -9543,16 +9597,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Result
      */
-    select?: ResultSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ResultInclude<ExtArgs> | null
+    select?: ResultSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Results.
      */
     data: ResultCreateManyInput | ResultCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResultIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -9854,6 +9908,15 @@ export namespace Prisma {
     item?: boolean | ItemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["inventory"]>
 
+  export type InventorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    itemId?: boolean
+    quantity?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    item?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inventory"]>
+
   export type InventorySelectScalar = {
     id?: boolean
     userId?: boolean
@@ -9861,12 +9924,14 @@ export namespace Prisma {
     quantity?: boolean
   }
 
-
   export type InventoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     item?: boolean | ItemDefaultArgs<ExtArgs>
   }
-
+  export type InventoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    item?: boolean | ItemDefaultArgs<ExtArgs>
+  }
 
   export type $InventoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Inventory"
@@ -9882,7 +9947,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["inventory"]>
     composites: {}
   }
-
 
   type InventoryGetPayload<S extends boolean | null | undefined | InventoryDefaultArgs> = $Result.GetResult<Prisma.$InventoryPayload, S>
 
@@ -10521,16 +10585,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Inventory
      */
-    select?: InventorySelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: InventoryInclude<ExtArgs> | null
+    select?: InventorySelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Inventories.
      */
     data: InventoryCreateManyInput | InventoryCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10835,6 +10899,14 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["game"]>
 
+  export type GameSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    currentScore?: boolean
+    currentHealth?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["game"]>
+
   export type GameSelectScalar = {
     id?: boolean
     userId?: boolean
@@ -10842,11 +10914,12 @@ export namespace Prisma {
     currentHealth?: boolean
   }
 
-
   export type GameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
-
+  export type GameIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
 
   export type $GamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Game"
@@ -10861,7 +10934,6 @@ export namespace Prisma {
     }, ExtArgs["result"]["game"]>
     composites: {}
   }
-
 
   type GameGetPayload<S extends boolean | null | undefined | GameDefaultArgs> = $Result.GetResult<Prisma.$GamePayload, S>
 
@@ -11498,16 +11570,16 @@ export namespace Prisma {
     /**
      * Select specific fields to fetch from the Game
      */
-    select?: GameSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GameInclude<ExtArgs> | null
+    select?: GameSelectCreateManyAndReturn<ExtArgs> | null
     /**
      * The data used to create many Games.
      */
     data: GameCreateManyInput | GameCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GameIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**

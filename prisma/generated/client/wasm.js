@@ -31,12 +31,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 5.14.0
- * Query Engine version: e9771e62de70f79a5e1c604a2d7c8e2a0a874b48
+ * Prisma Client JS version: 5.15.0
+ * Query Engine version: 12e25d8d06f6ea5a0252864dd9a03b1bb51f3022
  */
 Prisma.prismaVersion = {
-  client: "5.14.0",
-  engine: "e9771e62de70f79a5e1c604a2d7c8e2a0a874b48"
+  client: "5.15.0",
+  engine: "12e25d8d06f6ea5a0252864dd9a03b1bb51f3022"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -233,13 +233,13 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../..",
-  "clientVersion": "5.14.0",
-  "engineVersion": "e9771e62de70f79a5e1c604a2d7c8e2a0a874b48",
+  "clientVersion": "5.15.0",
+  "engineVersion": "12e25d8d06f6ea5a0252864dd9a03b1bb51f3022",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -259,7 +259,9 @@ defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: () => require('./query_engine_bg.js'),
   getQueryEngineWasmModule: async () => {
-    return (await import('#wasm-engine-loader')).default
+    const loader = (await import('#wasm-engine-loader')).default
+    const engine = (await loader).default
+    return engine
   }
 }
 
