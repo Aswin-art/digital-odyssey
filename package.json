@@ -7,8 +7,8 @@
     "build": "npx prisma db push && npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "npx prisma generate",
-    "postinstall": "npx prisma generate",
+    "prebuild": "prisma generate",
+    "postinstall": "prisma generate",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
