@@ -34,17 +34,24 @@ export default function Home() {
   };
 
   const handleButtonClick = () => {
-    if (session.data?.user) {
-      const newSound = new Howl({
-        src: ["/musics/click_button.wav"],
-        autoplay: true,
-      });
-      newSound.play();
-      router.push("/games");
-    } else {
-      signIn("google");
-      gameState.changeIsLogin();
-    }
+    // if (session.data?.user) {
+    //   const newSound = new Howl({
+    //     src: ["/musics/click_button.wav"],
+    //     autoplay: true,
+    //   });
+    //   newSound.play();
+    //   router.push("/games");
+    // } else {
+    //   signIn("google");
+    //   gameState.changeIsLogin();
+    // }
+
+    const newSound = new Howl({
+      src: ["/musics/click_button.wav"],
+      autoplay: true,
+    });
+    newSound.play();
+    router.push("/games");
   };
 
   const updateModalIntroState = useGameState(
@@ -93,7 +100,7 @@ export default function Home() {
                 onMouseLeave={handleHoverExit}
                 onClick={handleButtonClick}
               >
-                {session.data?.user ? "play game" : "login to play"}
+                {!session.data?.user ? "play game" : "login to play"}
               </h1>
             </main>
             <MusicBackground />
