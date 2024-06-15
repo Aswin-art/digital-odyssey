@@ -24,9 +24,7 @@ model User {
   role          String?
   accounts      Account[]
   sessions      Session[]
-  inventory     Inventory[]
-  results       Result[]
-  gameState     Game?
+  games         Game[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,8 +60,8 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("sessions")
 }
@@ -77,67 +75,60 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
-model Item {
-  id          String     @id @default(cuid())
-  name        String
-  point       Int
-  description String
-  effect      String     // Efek item pada player (misalnya "heal", "boost")
-  inventory   Inventory[]
-
-  @@map("items")
-}
-
 model Question {
-  id            String     @id @default(cuid())
-  questionText  String
-  answers       Answer[]
+  id            String    @id @default(cuid())
+  content       String
+  options       Option[]
+  gameId        String
+  game          Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 
   @@map("questions")
 }
 
-model Answer {
+model Option {
   id          String     @id @default(cuid())
-  text        String
+  content     String
   isCorrect   Boolean
   questionId  String
-  question    Question   @relation(fields: [questionId], references: [id])
+  question    Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
-  @@map("answers")
-}
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 
-model Result {
-  id          String     @id @default(cuid())
-  userId      String
-  score       Int
-  correct     Int        // Jumlah jawaban benar
-  incorrect   Int        // Jumlah jawaban salah
-  createdAt   DateTime   @default(now())
-
-  user        User       @relation(fields: [userId], references: [id])
-
-  @@map("results")
-}
-
-model Inventory {
-  id        String    @id @default(cuid())
-  userId    String
-  itemId    String
-  quantity  Int      @default(1)
-
-  user      User     @relation(fields: [userId], references: [id])
-  item      Item     @relation(fields: [itemId], references: [id])
-
-  @@map("inventories")
+  @@map("options")
 }
 
 model Game {
-  id            String    @id @default(cuid())
-  userId        String    @unique
-  currentScore  Int
-  currentHealth Int
+  id            String        @id @default(cuid())
+  userId        String
+  title         String
+  description   String?
+  introVideo    String?
+  gamePlayers   GamePlayer[]
+  questions     Question[]
 
-  user          User      @relation(fields: [userId], references: [id])
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("games")
+}
+
+model GamePlayer {
+  id          String    @id @default(cuid())
+  gameId      String
+  playername  String
+  playerNpm   String
+  totalPoint  Int       @default(0)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  game        Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@map("game_players")
 }
