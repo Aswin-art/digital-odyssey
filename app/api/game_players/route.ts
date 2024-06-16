@@ -4,14 +4,22 @@ import { type NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
-  const gameId = searchParams.get("gameId");
+  const gameCode = searchParams.get("gameCode");
 
   try {
-    if (gameId) {
-      const query = await prisma.gamePlayer.findMany({
-        where: { gameId },
+    if (gameCode) {
+      const game = await prisma.game.findUnique({
+        where: { gameCode },
+        include: {
+          gamePlayers: true,
+          questions: {
+            include: {
+              options: true,
+            },
+          },
+        },
       });
-      return Response.json({ data: query, message: "ok" }, { status: 200 });
+      return Response.json({ data: game, message: "ok" }, { status: 200 });
     }
   } catch (error) {
     return Response.json({ data: null, message: error }, { status: 500 });
