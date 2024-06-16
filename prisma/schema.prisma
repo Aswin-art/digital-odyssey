@@ -105,6 +105,7 @@ model Game {
   id            String        @id @default(cuid())
   userId        String
   title         String
+  gameCode      String        @unique
   description   String?
   introVideo    String?
   gamePlayers   GamePlayer[]
@@ -121,7 +122,7 @@ model Game {
 model GamePlayer {
   id          String    @id @default(cuid())
   gameId      String
-  playername  String
+  playerName  String
   playerNpm   String
   totalPoint  Int       @default(0)
 
