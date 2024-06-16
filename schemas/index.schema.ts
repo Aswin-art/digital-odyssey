@@ -10,9 +10,9 @@ export const gameSchema = z.object({
 });
 
 export const gamePlayerSchema = z.object({
-  gameCode: z.string({ required_error: "Game Code is required!" }),
-  playerName: z.string({ required_error: "Player name is required!" }),
-  playerNpm: z.string({ required_error: "Player npm is required!" }),
+  gameCode: z.string().min(6, { message: "Code is required!" }),
+  playerName: z.string().min(1, { message: "Name is required!" }),
+  playerNpm: z.string().min(1, { message: "NPM is required!" }),
 });
 
 export const questionSchema = z.object({

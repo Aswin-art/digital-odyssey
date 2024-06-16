@@ -8,6 +8,28 @@ import { Howl } from "howler";
 import Navbar from "@/components/Navbar";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { gamePlayerSchema } from "@/schemas/index.schema";
+import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const myFont = localFont({
   src: "./dragon-hunter.otf",
@@ -18,6 +40,15 @@ export default function Home() {
   const gameState = useGameState((state) => state);
   const session = useSession();
   const router = useRouter();
+
+  const playForm = useForm<z.infer<typeof gamePlayerSchema>>({
+    resolver: zodResolver(gamePlayerSchema),
+    defaultValues: {
+      gameCode: "",
+      playerName: "",
+      playerNpm: "",
+    },
+  });
 
   const handleHover = () => {
     const buttonPlayElement = document.getElementById("buttonPlay");
@@ -33,30 +64,41 @@ export default function Home() {
     }
   };
 
-  const handleButtonClick = () => {
-    // if (session.data?.user) {
-    //   const newSound = new Howl({
-    //     src: ["/musics/click_button.wav"],
-    //     autoplay: true,
-    //   });
-    //   newSound.play();
-    //   router.push("/games");
-    // } else {
-    //   signIn("google");
-    //   gameState.changeIsLogin();
-    // }
+  const handleHoverCreate = () => {
+    const buttonCreateElement = document.getElementById("buttonCreate");
+    if (buttonCreateElement) {
+      buttonCreateElement.style.filter = "brightness(0.8)";
+    }
+  };
 
-    const newSound = new Howl({
-      src: ["/musics/click_button.wav"],
-      autoplay: true,
-    });
-    newSound.play();
-    router.push("/games");
+  const handleHoverCreateExit = () => {
+    const buttonCreateElement = document.getElementById("buttonCreate");
+    if (buttonCreateElement) {
+      buttonCreateElement.style.filter = "brightness(1)";
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (session.data?.user) {
+      const newSound = new Howl({
+        src: ["/musics/click_button.wav"],
+        autoplay: true,
+      });
+      newSound.play();
+      router.push("/dashboard");
+    } else {
+      signIn("google");
+      gameState.changeIsLogin();
+    }
   };
 
   const updateModalIntroState = useGameState(
     (state) => state.changeModalHeadphone
   );
+
+  const handlePlayFormSubmit = (values: z.infer<typeof gamePlayerSchema>) => {
+    console.log("masuk form");
+  };
 
   return (
     <>
@@ -87,21 +129,123 @@ export default function Home() {
               <h1 className="text-6xl text-white font-bold">
                 The Canonical Chronicles
               </h1>
-              <h1
-                className={`text-2xl text-black font-bold px-14 py-3 hover:cursor-pointer ${myFont.className}`}
-                id="buttonPlay"
-                style={{
-                  backgroundImage: `url('/images/btn-background.webp')`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  transition: "filter 0.3s",
-                }}
-                onMouseEnter={handleHover}
-                onMouseLeave={handleHoverExit}
-                onClick={handleButtonClick}
-              >
-                {!session.data?.user ? "play game" : "login to play"}
-              </h1>
+              <div className="flex gap-3">
+                <h1
+                  className={`text-2xl text-black font-bold px-14 py-3 hover:cursor-pointer ${myFont.className}`}
+                  id="buttonCreate"
+                  style={{
+                    backgroundImage: `url('/images/btn-background.webp')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    transition: "filter 0.3s",
+                  }}
+                  onMouseEnter={handleHoverCreate}
+                  onMouseLeave={handleHoverCreateExit}
+                  onClick={handleButtonClick}
+                >
+                  create game
+                </h1>
+                <Dialog>
+                  <DialogTrigger>
+                    <h1
+                      className={`text-2xl text-black font-bold px-14 py-3 hover:cursor-pointer ${myFont.className}`}
+                      id="buttonPlay"
+                      style={{
+                        backgroundImage: `url('/images/btn-background.webp')`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        transition: "filter 0.3s",
+                      }}
+                      onMouseEnter={handleHover}
+                      onMouseLeave={handleHoverExit}
+                    >
+                      play game
+                    </h1>
+                  </DialogTrigger>
+                  <DialogContent className="bg-black text-white">
+                    <DialogHeader>
+                      <DialogTitle>
+                        Masukkan kode game agar dapat bermain!
+                      </DialogTitle>
+                      <DialogDescription>
+                        kode game diperlukan untuk ikut bermain di dalam game,
+                        minta room master jika kamu belum mendapatkan kode.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <Form {...playForm}>
+                      <form
+                        onSubmit={playForm.handleSubmit(handlePlayFormSubmit)}
+                      >
+                        <div className="grid grid-cols-2 gap-5 mb-5">
+                          <FormField
+                            control={playForm.control}
+                            name="gameCode"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Kode Game</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="bg-black"
+                                    autoComplete="false"
+                                    placeholder="kode..."
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={playForm.control}
+                            name="playerName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Nama Player</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="bg-black"
+                                    autoComplete="false"
+                                    placeholder="nama..."
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={playForm.control}
+                            name="playerNpm"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>NPM Player</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="bg-black"
+                                    autoComplete="false"
+                                    placeholder="npm..."
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <Button
+                          variant={"secondary"}
+                          type="submit"
+                          disabled={false}
+                        >
+                          Lanjutkan
+                        </Button>
+                      </form>
+                    </Form>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </main>
             <MusicBackground />
 
