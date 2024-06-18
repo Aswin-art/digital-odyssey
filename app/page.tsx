@@ -87,7 +87,9 @@ export default function Home() {
       newSound.play();
       router.push("/dashboard");
     } else {
-      signIn("google");
+      signIn("google", {
+        callbackUrl: "/dashboard",
+      });
       gameState.changeIsLogin();
     }
   };
