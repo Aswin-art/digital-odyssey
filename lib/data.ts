@@ -110,6 +110,15 @@ export type Employee = {
   profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
 };
 
+export type Game = {
+  id: string;
+  userId: string;
+  title: string;
+  gameCode: string;
+  introVideo?: string | null;
+  description?: string | null;
+};
+
 export const navItems: NavItem[] = [
   {
     title: "Dashboard",

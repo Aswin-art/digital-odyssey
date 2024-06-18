@@ -1,7 +1,7 @@
 import BreadCrumb from "@/components/dashboard/Breadcumb";
 import { columns } from "@/components/dashboard/tables/Columns";
 import { Heading } from "@/components/dashboard/tables/Heading";
-import { GameTable } from "@/components/dashboard/tables/Table";
+import { DataTable } from "@/components/dashboard/tables/Table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Employee } from "@/lib/data";
@@ -45,16 +45,16 @@ export default async function page({ searchParams }: paramsProps) {
         </div>
         <Separator />
 
-        <GameTable
-          searchKey="question"
+        <DataTable
+          searchKey="content"
           pageNo={page}
           columns={columns}
           totalUsers={totalUsers}
           data={employee}
           pageCount={pageCount}
         />
-        <GameTable
-          searchKey="player"
+        <DataTable
+          searchKey="name"
           pageNo={page}
           columns={columns}
           totalUsers={totalUsers}

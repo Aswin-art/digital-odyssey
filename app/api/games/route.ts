@@ -1,13 +1,53 @@
 import prisma from "@/lib/prisma";
 import { generateRandomCode } from "@/lib/generateRandomCode";
-import { gameSchema } from "@/schemas/index.schema";
+import { createGameSchema, gameSchema } from "@/schemas/index.schema";
 import { auth } from "@/auth";
+import { NextRequest } from "next/server";
 
 // get all games
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
+  const user = await auth();
+  const searchParams = req.nextUrl.searchParams;
+  const search = searchParams.get("search");
+
   try {
-    const query = await prisma.game.findMany();
-    return Response.json({ data: query, message: "ok" }, { status: 200 });
+    if (search) {
+      const query = await prisma.game.findMany({
+        where: {
+          userId: user?.user?.id,
+          AND: {
+            OR: [
+              {
+                title: {
+                  contains: search,
+                  mode: "insensitive",
+                },
+              },
+              {
+                description: {
+                  contains: search,
+                  mode: "insensitive",
+                },
+              },
+            ],
+          },
+        },
+        include: {
+          user: true,
+        },
+      });
+      return Response.json({ data: query, message: "ok" }, { status: 200 });
+    } else {
+      const query = await prisma.game.findMany({
+        where: {
+          userId: user?.user?.id,
+        },
+        include: {
+          user: true,
+        },
+      });
+      return Response.json({ data: query, message: "ok" }, { status: 200 });
+    }
   } catch (error) {
     console.error("error when fetching all games", error);
     return Response.json({ data: null, message: error }, { status: 500 });
@@ -19,10 +59,10 @@ export async function POST(req: Request) {
   try {
     const user = await auth();
     const body = await req.json();
-    body.classCode = await generateRandomCode();
+    body.gameCode = await generateRandomCode();
     body.userId = user?.user?.id;
 
-    const parseResult = gameSchema.safeParse(body);
+    const parseResult = createGameSchema.safeParse(body);
 
     if (!parseResult.success) {
       return Response.json(

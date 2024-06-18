@@ -49,7 +49,7 @@ interface DataTableProps<TData, TValue> {
   };
 }
 
-export function GameTable<TData, TValue>({
+export function DataTable<TData, TValue>({
   columns,
   data,
   pageNo,
@@ -70,7 +70,7 @@ export function GameTable<TData, TValue>({
   const perPageAsNumber = Number(per_page);
   const fallbackPerPage = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
 
-  /* this can be used to get the selectedrows 
+  /* this can be used to get the selectedrows
   console.log("value", table.getFilteredSelectedRowModel()); */
 
   // Create query string

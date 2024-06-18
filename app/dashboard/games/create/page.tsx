@@ -25,6 +25,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const breadcrumbItems = [
   { title: "Games", link: "/dashboard/games" },
@@ -41,11 +43,40 @@ const page = () => {
     },
   });
 
-  const handleCreateFormSubmit = (values: z.infer<typeof createGameSchema>) => {
-    console.log(values);
+  const router = useRouter();
+
+  const handleCreateFormSubmit = async (
+    values: z.infer<typeof createGameSchema>
+  ) => {
+    const loadingToastId = toast.loading("Creating game...");
+
+    try {
+      const res = await fetch("http://localhost:3000/api/games", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(`Error: ${res.status} ${errorData.message}`);
+      }
+
+      toast.success("Game created", { id: loadingToastId });
+      router.back();
+    } catch (error: any) {
+      toast.dismiss(loadingToastId);
+      toast.error(`Failed to create game`);
+      console.error("Failed to create game:", error.message);
+    }
   };
+
   return (
     <div className="flex-1 space-y-4  p-4 pt-6 md:p-8">
+      <Toaster />
       <BreadCrumb items={breadcrumbItems} />
 
       <div className="flex items-start justify-between">
@@ -123,7 +154,7 @@ const page = () => {
                 </div>
 
                 <Button type="submit" disabled={false}>
-                  Lanjutkan
+                  Buat Game
                 </Button>
               </form>
             </Form>

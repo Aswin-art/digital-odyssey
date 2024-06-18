@@ -1,13 +1,14 @@
 import BreadCrumb from "@/components/dashboard/Breadcumb";
-import { columns } from "@/components/dashboard/tables/Columns";
+import { columnGame } from "@/components/dashboard/tables/Columns";
 import { Heading } from "@/components/dashboard/tables/Heading";
-import { GameTable } from "@/components/dashboard/tables/Table";
+import { DataTable } from "@/components/dashboard/tables/Table";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Employee } from "@/lib/data";
+import { Game } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { Toaster } from "react-hot-toast";
 
 const breadcrumbItems = [{ title: "Games", link: "/dashboard/games" }];
 
@@ -20,46 +21,52 @@ type paramsProps = {
 export default async function page({ searchParams }: paramsProps) {
   const page = Number(searchParams.page) || 1;
   const pageLimit = Number(searchParams.limit) || 10;
-  const country = searchParams.search || null;
+  const game = searchParams.search || null;
   const offset = (page - 1) * pageLimit;
 
   const res = await fetch(
-    `https://api.slingacademy.com/v1/sample-data/users?offset=${offset}&limit=${pageLimit}` +
-      (country ? `&search=${country}` : "")
+    `http://localhost:3000/api/games?offset=${offset}&limit=${pageLimit}` +
+      (game ? `&search=${game}` : ""),
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
   );
-  const employeeRes = await res.json();
-  const totalUsers = employeeRes.total_users; //1000
-  const pageCount = Math.ceil(totalUsers / pageLimit);
-  const employee: Employee[] = employeeRes.users;
+  const gameRes = await res.json();
+  const totalGames = gameRes.data.length;
+  const pageCount = Math.ceil(totalGames / pageLimit);
+  const gameData: Game[] = gameRes.data;
   return (
-    <>
-      <div className="flex-1 space-y-4  p-4 pt-6 md:p-8">
-        <BreadCrumb items={breadcrumbItems} />
+    <div className="flex-1 space-y-4  p-4 pt-6 md:p-8">
+      <Toaster />
+      <BreadCrumb items={breadcrumbItems} />
 
-        <div className="flex items-start justify-between">
-          <Heading
-            title={`Games (${totalUsers})`}
-            description="Disini anda bisa bebas mengelola game yang berhasil dibuat."
-          />
-
-          <Link
-            href={"/dashboard/games/create"}
-            className={cn(buttonVariants({ variant: "default" }))}
-          >
-            <Plus className="mr-2 h-4 w-4" /> Add New
-          </Link>
-        </div>
-        <Separator />
-
-        <GameTable
-          searchKey="games"
-          pageNo={page}
-          columns={columns}
-          totalUsers={totalUsers}
-          data={employee}
-          pageCount={pageCount}
+      <div className="flex items-start justify-between">
+        <Heading
+          title={`Games (${totalGames})`}
+          description="Disini anda bisa bebas mengelola game yang berhasil dibuat."
         />
+
+        <Link
+          href={"/dashboard/games/create"}
+          className={cn(buttonVariants({ variant: "default" }))}
+        >
+          <Plus className="mr-2 h-4 w-4" /> Add New
+        </Link>
       </div>
-    </>
+      <Separator />
+
+      <DataTable
+        searchKey="title"
+        pageNo={page}
+        columns={columnGame}
+        totalUsers={totalGames}
+        data={gameData}
+        pageCount={pageCount}
+      />
+    </div>
   );
 }
