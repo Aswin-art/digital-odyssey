@@ -49,7 +49,7 @@ interface DataTableProps<TData, TValue> {
   };
 }
 
-export function EmployeeTable<TData, TValue>({
+export function GameTable<TData, TValue>({
   columns,
   data,
   pageNo,

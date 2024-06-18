@@ -33,3 +33,9 @@ export const optionSchema = z.object({
 export const optionArraySchema = z
   .array(optionSchema)
   .nonempty({ message: "Option can not be empty!" });
+
+export const createGameSchema = z.object({
+  title: z.string().min(1, { message: "Title is required!" }),
+  description: z.string().nullable().optional(),
+  introVideo: z.string().nullable().optional(),
+});

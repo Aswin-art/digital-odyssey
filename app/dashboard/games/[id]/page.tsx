@@ -2,14 +2,15 @@ import BreadCrumb from "@/components/dashboard/Breadcumb";
 import { columns } from "@/components/dashboard/tables/Columns";
 import { Heading } from "@/components/dashboard/tables/Heading";
 import { GameTable } from "@/components/dashboard/tables/Table";
-import { buttonVariants } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Employee } from "@/lib/data";
-import { cn } from "@/lib/utils";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import React from "react";
 
-const breadcrumbItems = [{ title: "Games", link: "/dashboard/games" }];
+const breadcrumbItems = [
+  { title: "Games", link: "/dashboard/games" },
+  { title: "Detail", link: "/dashboard/games" },
+];
 
 type paramsProps = {
   searchParams: {
@@ -30,29 +31,30 @@ export default async function page({ searchParams }: paramsProps) {
   const employeeRes = await res.json();
   const totalUsers = employeeRes.total_users; //1000
   const pageCount = Math.ceil(totalUsers / pageLimit);
-  const employee: Employee[] = employeeRes.users;
+  const employee: Employee[] = [];
   return (
-    <>
+    <ScrollArea className="h-full">
       <div className="flex-1 space-y-4  p-4 pt-6 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Games (${totalUsers})`}
-            description="Disini anda bisa bebas mengelola game yang berhasil dibuat."
+            title={`The Chronicle of Canonics`}
+            description="Play and challenge yourself."
           />
-
-          <Link
-            href={"/dashboard/games/create"}
-            className={cn(buttonVariants({ variant: "default" }))}
-          >
-            <Plus className="mr-2 h-4 w-4" /> Add New
-          </Link>
         </div>
         <Separator />
 
         <GameTable
-          searchKey="games"
+          searchKey="question"
+          pageNo={page}
+          columns={columns}
+          totalUsers={totalUsers}
+          data={employee}
+          pageCount={pageCount}
+        />
+        <GameTable
+          searchKey="player"
           pageNo={page}
           columns={columns}
           totalUsers={totalUsers}
@@ -60,6 +62,6 @@ export default async function page({ searchParams }: paramsProps) {
           pageCount={pageCount}
         />
       </div>
-    </>
+    </ScrollArea>
   );
 }
