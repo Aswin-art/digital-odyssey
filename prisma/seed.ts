@@ -3,197 +3,195 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  const alice = await prisma.user.create({
-    data: {
-      name: "Alice",
-      email: "alice@prisma.io",
-      games: {
-        create: [
-          {
-            title: "Game 1",
-            gameCode: "game_1_code",
-            description: "Description for Game 1",
-            introVideo: "http://example.com/intro1.mp4",
-            gamePlayers: {
-              create: [
-                {
-                  playerName: "Player 1",
-                  playerNpm: "npm_1",
-                },
-                {
-                  playerName: "Player 2",
-                  playerNpm: "npm_2",
-                },
-              ],
-            },
-            questions: {
-              create: [
-                {
-                  content: "Question 1 for Game 1",
-                  options: {
-                    create: [
-                      { content: "Option 1", isCorrect: true },
-                      { content: "Option 2", isCorrect: false },
-                      { content: "Option 3", isCorrect: false },
-                    ],
-                  },
-                },
-                {
-                  content: "Question 2 for Game 1",
-                  options: {
-                    create: [
-                      { content: "Option 1", isCorrect: false },
-                      { content: "Option 2", isCorrect: true },
-                      { content: "Option 3", isCorrect: false },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            title: "Game 2",
-            gameCode: "game_2_code",
-            description: "Description for Game 2",
-            introVideo: "http://example.com/intro2.mp4",
-            gamePlayers: {
-              create: [
-                {
-                  playerName: "Player 3",
-                  playerNpm: "npm_3",
-                },
-                {
-                  playerName: "Player 4",
-                  playerNpm: "npm_4",
-                },
-              ],
-            },
-            questions: {
-              create: [
-                {
-                  content: "Question 1 for Game 2",
-                  options: {
-                    create: [
-                      { content: "Option 1", isCorrect: false },
-                      { content: "Option 2", isCorrect: false },
-                      { content: "Option 3", isCorrect: true },
-                    ],
-                  },
-                },
-                {
-                  content: "Question 2 for Game 2",
-                  options: {
-                    create: [
-                      { content: "Option 1", isCorrect: true },
-                      { content: "Option 2", isCorrect: false },
-                      { content: "Option 3", isCorrect: false },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      id: "clxkon9at0000wne7q2hrl70n",
     },
   });
 
-  const bob = await prisma.user.create({
+  if (!existingUser) {
+    throw new Error("User dengan ID yang diberikan tidak ditemukan.");
+  }
+
+  // Seed Game
+  const game = await prisma.game.create({
     data: {
-      name: "Bob",
-      email: "bob@prisma.io",
-      games: {
-        create: [
-          {
-            title: "Game 3",
-            gameCode: "game_3_code",
-            description: "Description for Game 3",
-            introVideo: "http://example.com/intro3.mp4",
-            gamePlayers: {
-              create: [
-                {
-                  playerName: "Player 5",
-                  playerNpm: "npm_5",
-                },
-                {
-                  playerName: "Player 6",
-                  playerNpm: "npm_6",
-                },
-              ],
-            },
-            questions: {
-              create: [
-                {
-                  content: "Question 1 for Game 3",
-                  options: {
-                    create: [
-                      { content: "Option 1", isCorrect: true },
-                      { content: "Option 2", isCorrect: false },
-                      { content: "Option 3", isCorrect: false },
-                    ],
-                  },
-                },
-                {
-                  content: "Question 2 for Game 3",
-                  options: {
-                    create: [
-                      { content: "Option 1", isCorrect: false },
-                      { content: "Option 2", isCorrect: true },
-                      { content: "Option 3", isCorrect: false },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            title: "Game 4",
-            gameCode: "game_4_code",
-            description: "Description for Game 4",
-            introVideo: "http://example.com/intro4.mp4",
-            gamePlayers: {
-              create: [
-                {
-                  playerName: "Player 7",
-                  playerNpm: "npm_7",
-                },
-                {
-                  playerName: "Player 8",
-                  playerNpm: "npm_8",
-                },
-              ],
-            },
-            questions: {
-              create: [
-                {
-                  content: "Question 1 for Game 4",
-                  options: {
-                    create: [
-                      { content: "Option 1", isCorrect: false },
-                      { content: "Option 2", isCorrect: true },
-                      { content: "Option 3", isCorrect: false },
-                    ],
-                  },
-                },
-                {
-                  content: "Question 2 for Game 4",
-                  options: {
-                    create: [
-                      { content: "Option 1", isCorrect: false },
-                      { content: "Option 2", isCorrect: false },
-                      { content: "Option 3", isCorrect: true },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
+      userId: existingUser.id,
+      title: "Chronicles of Canonics",
+      gameCode: "KjTbgf", // Contoh kode unik game
+      description:
+        "Perdalam pemahamanmu mengenai sistem kanonik pada sistem digital dengan cara menyelesaikan msi yang ada di game ini!",
+      introVideo: "https://example.com/intro.mp4", // URL video intro game
     },
   });
 
-  console.log({ alice, bob });
+  // Seed Question
+  const question1 = await prisma.question.create({
+    data: {
+      content:
+        "Fungsi logika F(A, B, C) = A'B + BC dalam bentuk kanonik SOP adalah: ?",
+      gameId: game.id,
+    },
+  });
+
+  // Seed Option
+  await prisma.option.create({
+    data: {
+      content: "A'B'C + A'BC' + A'BC + AB'C",
+      isCorrect: true,
+      questionId: question1.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "AB'C + ABC' + ABC + A'BC",
+      isCorrect: false,
+      questionId: question1.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "A'B'C + A'BC' + ABC + A'BC",
+      isCorrect: false,
+      questionId: question1.id,
+    },
+  });
+
+  // Seed Question
+  const question2 = await prisma.question.create({
+    data: {
+      content: "Fungsi logika F(A, B) = A + B dalam bentuk kanonik POS adalah:",
+      gameId: game.id,
+    },
+  });
+
+  // Seed Option
+  await prisma.option.create({
+    data: {
+      content: "(A + B)(A' + B)",
+      isCorrect: false,
+      questionId: question2.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "(A + B)(A + B')",
+      isCorrect: true,
+      questionId: question2.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "A' + B)(A + B')",
+      isCorrect: false,
+      questionId: question2.id,
+    },
+  });
+
+  // Seed Question
+  const question3 = await prisma.question.create({
+    data: {
+      content: "Fungsi logika F(A, B) = A'B' dalam bentuk kanonik SOP adalah:",
+      gameId: game.id,
+    },
+  });
+
+  // Seed Option
+  await prisma.option.create({
+    data: {
+      content: "A'B'",
+      isCorrect: true,
+      questionId: question3.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "A'B + AB'",
+      isCorrect: false,
+      questionId: question3.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "A'B' + AB",
+      isCorrect: false,
+      questionId: question3.id,
+    },
+  });
+
+  // Seed Question
+  const question4 = await prisma.question.create({
+    data: {
+      content:
+        "Fungsi logika F(A, B, C) = A + B' dalam bentuk kanonik POS adalah:",
+      gameId: game.id,
+    },
+  });
+
+  // Seed Option
+  await prisma.option.create({
+    data: {
+      content: "(A + B')(A' + B)(A + B)(A' + B')",
+      isCorrect: true,
+      questionId: question4.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "(A + B)(A' + B)",
+      isCorrect: false,
+      questionId: question4.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "(A + B')(A' + B)(A + B)",
+      isCorrect: false,
+      questionId: question4.id,
+    },
+  });
+
+  // Seed Question
+  const question5 = await prisma.question.create({
+    data: {
+      content:
+        " Fungsi logika F(A, B, C) = A'B'C' dalam bentuk kanonik POS adalah:",
+      gameId: game.id,
+    },
+  });
+
+  // Seed Option
+  await prisma.option.create({
+    data: {
+      content: "(A + B + C)",
+      isCorrect: true,
+      questionId: question5.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "(A + B + C')",
+      isCorrect: false,
+      questionId: question5.id,
+    },
+  });
+
+  await prisma.option.create({
+    data: {
+      content: "(A' + B' + C')",
+      isCorrect: false,
+      questionId: question5.id,
+    },
+  });
 }
 
 main()
