@@ -51,14 +51,17 @@ const Page = () => {
     const loadingToastId = toast.loading("Creating game...");
 
     try {
-      const res = await fetch(`/api/games`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const res = await fetch(
+        `https://digital-odyssey-sable.vercel.app/api/games`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();

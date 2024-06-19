@@ -25,7 +25,7 @@ export default async function page({ searchParams }: paramsProps) {
   const offset = (page - 1) * pageLimit;
 
   const res = await fetch(
-    `/api/games?offset=${offset}&limit=${pageLimit}` +
+    `https://digital-odyssey-sable.vercel.app/api/games?offset=${offset}&limit=${pageLimit}` +
       (game ? `&search=${game}` : ""),
     {
       method: "GET",
