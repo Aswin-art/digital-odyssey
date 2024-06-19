@@ -33,7 +33,7 @@ const breadcrumbItems = [
   { title: "Create", link: "/dashboard/games/create" },
 ];
 
-const page = () => {
+const Page = () => {
   const createForm = useForm<z.infer<typeof createGameSchema>>({
     resolver: zodResolver(createGameSchema),
     defaultValues: {
@@ -51,7 +51,7 @@ const page = () => {
     const loadingToastId = toast.loading("Creating game...");
 
     try {
-      const res = await fetch("http://localhost:3000/api/games", {
+      const res = await fetch(`${process.env.NEXTAUTH_URL}/api/games`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -165,4 +165,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

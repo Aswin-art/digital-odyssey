@@ -25,7 +25,7 @@ export default async function page({ searchParams }: paramsProps) {
   const offset = (page - 1) * pageLimit;
 
   const res = await fetch(
-    `http://localhost:3000/api/games?offset=${offset}&limit=${pageLimit}` +
+    `${process.env.NEXTAUTH_URL}/api/games?offset=${offset}&limit=${pageLimit}` +
       (game ? `&search=${game}` : ""),
     {
       method: "GET",
