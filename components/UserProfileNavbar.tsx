@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function UserProfileNavbar() {
@@ -29,10 +29,10 @@ export default function UserProfileNavbar() {
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem>
-          <Link href={"/"}>Leaderboard</Link>
+          <Link href={"/dashboard"}>Dashboard</Link>
         </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem>
-          <Link href={"/"}>Riwayat</Link>
+        <DropdownMenuCheckboxItem onClick={() => signOut({ callbackUrl: "/" })}>
+          Logout
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -30,6 +30,7 @@ import { gamePlayerSchema } from "@/schemas/index.schema";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import toast, { Toaster } from "react-hot-toast";
 
 const myFont = localFont({
   src: "./dragon-hunter.otf",
@@ -98,12 +99,38 @@ export default function Home() {
     (state) => state.changeModalHeadphone
   );
 
-  const handlePlayFormSubmit = (values: z.infer<typeof gamePlayerSchema>) => {
-    console.log("masuk form");
+  const handlePlayFormSubmit = async (
+    values: z.infer<typeof gamePlayerSchema>
+  ) => {
+    const loadingToastId = toast.loading("Loading...");
+    try {
+      const res = await fetch("http://localhost:3000/api/game_players", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (res.ok) {
+        toast.success("Berhasil masuk ke game!", { id: loadingToastId });
+        localStorage.setItem("gameCode", values.gameCode);
+        localStorage.setItem("playerName", values.playerName);
+        localStorage.setItem("playerNpm", values.playerNpm);
+        router.push("/games");
+      } else {
+        toast.error(`Kode game salah!`, { id: loadingToastId });
+      }
+    } catch (error) {
+      toast.error(`Gagal masuk ke game!`, { id: loadingToastId });
+      console.log(error);
+    }
   };
 
   return (
     <>
+      <Toaster />
       <div className="hidden lg:block">
         {!gameState.modalHeadphone ? (
           <Modal
