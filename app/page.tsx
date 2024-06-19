@@ -104,7 +104,7 @@ export default function Home() {
   ) => {
     const loadingToastId = toast.loading("Loading...");
     try {
-      const res = await fetch(`${process.env.NEXTAUTH_URL}/api/game_players`, {
+      const res = await fetch(`/api/game_players`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
