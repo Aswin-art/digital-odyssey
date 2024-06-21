@@ -110,6 +110,20 @@ export type Employee = {
   profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
 };
 
+export type Question = {
+  id: number;
+  content: string;
+  createdAt: string;
+};
+
+export type GamePlayer = {
+  id: number;
+  gameId: string;
+  playerName: string;
+  playerNpm: string;
+  totalPoint: number;
+};
+
 export type Game = {
   id: string;
   userId: string;
