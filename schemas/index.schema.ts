@@ -39,3 +39,7 @@ export const createGameSchema = z.object({
   description: z.string().nullable().optional(),
   introVideo: z.string().nullable().optional(),
 });
+
+export const questionCreateSchema = z.object({
+  content: z.string().min(1, { message: "Content is required!" }),
+});

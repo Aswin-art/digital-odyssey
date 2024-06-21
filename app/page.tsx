@@ -31,6 +31,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import toast, { Toaster } from "react-hot-toast";
+import { setCookie } from "cookies-next";
 
 const myFont = localFont({
   src: "./dragon-hunter.otf",
@@ -115,9 +116,9 @@ export default function Home() {
 
       if (res.ok) {
         toast.success("Berhasil masuk ke game!", { id: loadingToastId });
-        localStorage.setItem("gameCode", values.gameCode);
-        localStorage.setItem("playerName", values.playerName);
-        localStorage.setItem("playerNpm", values.playerNpm);
+        setCookie("gameCode", values.gameCode);
+        setCookie("playerName", values.playerName);
+        setCookie("playerNpm", values.playerNpm);
         router.push("/games");
       } else {
         toast.error(`Kode game salah!`, { id: loadingToastId });
