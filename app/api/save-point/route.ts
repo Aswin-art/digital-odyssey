@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
       });
 
       if (game) {
-        const gamePlayer = await prisma.gamePlayer.updateMany({
+        const gamePlayer = await prisma.gamePlayer.update({
           data: {
             totalPoint: parsedPoint,
           },
@@ -33,6 +33,16 @@ export async function GET(req: NextRequest) {
           return Response.json(
             { data: gamePlayer, message: "ok" },
             { status: 200 }
+          );
+        } else {
+          return Response.json(
+            {
+              data: null,
+              message: "can not update data",
+            },
+            {
+              status: 500,
+            }
           );
         }
       } else {
