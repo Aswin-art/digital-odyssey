@@ -22,18 +22,21 @@ export async function GET(req: NextRequest) {
           },
         });
 
-        if (questions) {
-          return Response.json(
-            { data: questions, message: "ok" },
-            { status: 200 }
-          );
-        }
+        return Response.json(
+          { data: questions, message: "ok" },
+          { status: 200 }
+        );
       } else {
         return Response.json(
           { data: null, message: "Game not found!" },
           { status: 404 }
         );
       }
+    } else {
+      return Response.json(
+        { data: null, message: "No gameCode provided!" },
+        { status: 400 }
+      );
     }
   } catch (error) {
     return Response.json({ data: null, message: error }, { status: 500 });

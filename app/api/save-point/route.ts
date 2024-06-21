@@ -38,6 +38,11 @@ export async function POST(req: NextRequest) {
           { status: 404 }
         );
       }
+    } else {
+      return Response.json(
+        { data: null, message: "No gameCode provided!" },
+        { status: 400 }
+      );
     }
   } catch (error) {
     return Response.json({ data: null, message: error }, { status: 500 });
