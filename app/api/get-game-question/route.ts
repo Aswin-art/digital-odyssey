@@ -23,12 +23,8 @@ export async function GET(req: NextRequest) {
         });
 
         if (questions) {
-          const randomIndex = Math.floor(Math.random() * questions.length);
-
-          const randomQuestion = questions[randomIndex];
-
           return Response.json(
-            { data: randomQuestion, message: "ok" },
+            { data: questions, message: "ok" },
             { status: 200 }
           );
         }

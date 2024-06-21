@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       if (game) {
         const gamePlayer = await prisma.gamePlayer.updateMany({
           data: {
-            totalPoint: body.totalPoint,
+            totalPoint: body.point,
           },
           where: {
             id: game.id,
