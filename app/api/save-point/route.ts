@@ -2,12 +2,15 @@ import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   const cookieStore = cookies();
   const gameCode = cookieStore.get("gameCode");
   const playerName = cookieStore.get("playerName");
 
-  const body = await req.json();
+  const searchParams = req.nextUrl.searchParams;
+  const point = searchParams.get("point");
+
+  const parsedPoint = Number(point);
 
   try {
     if (gameCode && playerName) {
@@ -18,7 +21,7 @@ export async function POST(req: NextRequest) {
       if (game) {
         const gamePlayer = await prisma.gamePlayer.updateMany({
           data: {
-            totalPoint: body.point,
+            totalPoint: parsedPoint,
           },
           where: {
             id: game.id,
