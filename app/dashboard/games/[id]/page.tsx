@@ -35,13 +35,16 @@ export default async function page({ searchParams, params }: paramsProps) {
   const country = searchParams.search || null;
   const offset = (page - 1) * pageLimit;
 
-  const res = await fetch(`http://localhost:3000/api/games/${params.id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
+  const res = await fetch(
+    `https://digital-odyssey-sable.vercel.app/api/games/${params.id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
 
   const apiRes = await res.json();
   const totalQuestion = apiRes.data.questions.length;
